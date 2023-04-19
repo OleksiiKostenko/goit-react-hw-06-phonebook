@@ -1,15 +1,29 @@
 import css from 'components/Form.module.css';
 import { useInputContex } from './Context';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, getContacts } from 'redux/contactsSlice';
 
 export const Form = ({ onSubmit }) => {
   const { nameValue, addName, numberValue, addNumber } = useInputContex();
+  const contacts = useSelector(getContacts);
+  const distpatch = useDispatch();
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    onSubmit({
-      name: nameValue,
-      number: numberValue,
-    });
+    const names = contacts.map(contact => contact.name);
+
+    if (names.includes(nameValue)) {
+      alert(`${nameValue}is already in contacts.`);
+      return;
+    }
+    onSubmit(
+      distpatch(
+        addContact({
+          name: nameValue,
+          number: numberValue,
+        })
+      )
+    );
     reset();
   };
 
