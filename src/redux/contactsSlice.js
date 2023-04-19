@@ -14,7 +14,6 @@ const contactsInitialState = {
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['contacts '],
 };
 
 const contactsSlice = createSlice({
@@ -22,12 +21,7 @@ const contactsSlice = createSlice({
   initialState: contactsInitialState,
   reducers: {
     addContact(state, action) {
-      const contact = {
-        id: nanoid(),
-        name: action.payload.name,
-        number: action.payload.number,
-      };
-      state.contacts.unshift(contact);
+      state.contacts.unshift(action.payload);
     },
     deleteContact(state, action) {
       state.contacts = state.contacts.filter(
