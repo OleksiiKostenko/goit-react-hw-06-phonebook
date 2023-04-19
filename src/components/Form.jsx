@@ -3,8 +3,9 @@ import { useInputContex } from './Context';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact, getContacts } from 'redux/contactsSlice';
 
-export const Form = ({ onSubmit }) => {
+export const Form = () => {
   const { nameValue, addName, numberValue, addNumber } = useInputContex();
+
   const contacts = useSelector(getContacts);
   const distpatch = useDispatch();
 
@@ -16,7 +17,7 @@ export const Form = ({ onSubmit }) => {
       alert(`${nameValue}is already in contacts.`);
       return;
     }
-    onSubmit(
+    addContact(
       distpatch(
         addContact({
           name: nameValue,

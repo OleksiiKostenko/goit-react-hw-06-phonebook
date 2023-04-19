@@ -1,9 +1,21 @@
 import css from 'components/PhonebookList.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact, getContacts } from 'redux/contactsSlice';
+import { getFilter } from 'redux/filterSlice';
 
-export const PhonebookList = ({ contacts, onDeleteContact }) => {
+export const PhonebookList = () => {
+  const distpatch = useDispatch();
+  const filter = useSelector(getFilter);
+  const contacts = useSelector(getContacts);
+
+  const normalizedFilter = filter.toLowerCase();
+  const filteredList = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter)
+  );
+
   return (
     <ul className={css.list_item}>
-      {contacts.map(({ id, name, number }) => (
+      {filteredList.map(({ id, name, number }) => (
         <li className={css.list_el} key={id}>
           <p className={css.list_title}>
             {name}:{number}
@@ -11,7 +23,7 @@ export const PhonebookList = ({ contacts, onDeleteContact }) => {
           <button
             type="button"
             className={css.list_btn}
-            onClick={() => onDeleteContact(id)}
+            onClick={() => distpatch(deleteContact(id))}
           >
             Delete
           </button>
